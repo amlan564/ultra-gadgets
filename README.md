@@ -5,7 +5,7 @@
 This is a full-stack e-commerce web application built using the MERN stack with modern UI components from Shadcn UI and Tailwind CSS. It enables users to browse gadgets, add products to their cart, and securely place orders with integrated Stripe payment processing. The website includes user authentication (JWT & bcrypt), product management, image uploads via Cloudinary, and a responsive interface powered by Redux Toolkit for state management.
 
 
-### Live Link - https://ultra-gadgets.vercel.app
+### Live Link - 
 
 ### Features
 
@@ -55,4 +55,3 @@ I'm Amlan Chakraborty, a Full Stack Web Developer
 [Github](https://github.com/amlan564)
 
 [Linkedin](https://www.linkedin.com/in/amlan-chakraborty/)
-
