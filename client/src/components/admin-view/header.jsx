@@ -27,7 +27,7 @@ const AdminHeader = ({ setOpen }) => {
       <div className="flex flex-1 justify-end">
         <Button
           onClick={handleLogout}
-          className="bg-black text-white cursor-pointer"
+          className="cursor-pointer flex items-center"
           size="lg"
         >
           <LogOut />

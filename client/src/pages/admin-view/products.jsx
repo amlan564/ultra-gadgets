@@ -113,13 +113,14 @@ const AdminProducts = () => {
 
   return (
     <div className="lg:ml-[260px] mt-[60px]">
-      <div className="w-full flex justify-end">
+      <h3 className="mb-6 text-2xl font-bold">Products Management</h3>
+      <div className="w-full flex justify-start">
         <Button
           onClick={() => setOpenCreateProductsDialog(true)}
           className="flex items-center gap-2"
         >
           <PlusIcon />
-          <span>Add New Product</span>
+          Add New Product
         </Button>
       </div>
       <div className="grid gap-4 justify-center sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mt-10">
