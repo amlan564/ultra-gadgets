@@ -17,7 +17,7 @@ const Profile = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const { user, isAuthenticated, isLoading } = useSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
   const [userFormData, setUserFormData] = useState({
     name: user?.userName,
@@ -62,7 +62,7 @@ const Profile = () => {
           userName: userFormData.name,
           profileImage: uploadedImageUrl,
         },
-      })
+      }),
     ).then((data) => {
       if (data.payload?.success) {
         toast.success("Profile updated successfully");
@@ -71,6 +71,7 @@ const Profile = () => {
           name: data.payload.user.userName,
         }));
         setUploadedImageUrl(data.payload.user.profileImage || uploadedImageUrl);
+        setImageFile(null);
       } else {
         toast.error(data.payload?.message || "Failed to update profile");
       }
@@ -98,7 +99,7 @@ const Profile = () => {
           newPassword: passwordFormData.newPassword,
           confirmPassword: passwordFormData.confirmPassword,
         },
-      })
+      }),
     ).then((data) => {
       if (data?.payload?.success) {
         toast.success(data?.payload?.message);

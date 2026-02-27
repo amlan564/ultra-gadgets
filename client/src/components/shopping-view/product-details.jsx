@@ -32,7 +32,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
         userName: user?.userName,
         reviewMessage: reviewMsg,
         rating: rating,
-      })
+      }),
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(getReviews(productDetails?._id));
@@ -48,7 +48,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
 
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
-        (item) => item.productId === getCurrentProductId
+        (item) => item.productId === getCurrentProductId,
       );
 
       if (indexOfCurrentItem > -1) {
@@ -58,7 +58,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
 
         if (getQuantity + 1 > getTotalStock) {
           toast.error(
-            `Only ${getQuantity} quantity can be added for this product`
+            `Only ${getQuantity} quantity can be added for this product`,
           );
           return;
         }
@@ -70,7 +70,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
         userId: user?.id,
         productId: getCurrentProductId,
         quantity: 1,
-      })
+      }),
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchCartItems(user?.id));
@@ -117,18 +117,19 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
           </div>
           <div className="flex items-center justify-between">
             <p
-              className={`text-lg font-medium ${
+              className={`text-lg font-bold ${
                 productDetails?.salePrice > 0 ? "line-through text-red-500" : ""
               }`}
             >
               Tk {productDetails?.price}
             </p>
             {productDetails?.salePrice > 0 ? (
-              <p className="text-lg font-medium">
+              <p className="text-lg font-bold">
                 Tk {productDetails?.salePrice}
               </p>
             ) : null}
           </div>
+
           <div className="flex items-center gap-2 mt-2">
             <div className="flex items-center gap-0.5">
               <StarRating rating={averageReview} />
@@ -137,6 +138,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
               ({averageReview.toFixed(1)})
             </span>
           </div>
+
           <div className="my-5">
             {productDetails?.totalStock === 0 ? (
               <Button className="w-full opacity-60 cursor-not-allowed">
@@ -147,7 +149,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
                 onClick={() =>
                   handleAddToCart(
                     productDetails?._id,
-                    productDetails?.totalStock
+                    productDetails?.totalStock,
                   )
                 }
                 className="w-full"
@@ -156,8 +158,10 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
               </Button>
             )}
           </div>
+
           <Separator />
-          <div className="max-h-[200px] overflow-auto">
+
+          <div className="max-h-[200px] overflow-auto pr-2">
             <h2 className="text-lg font-bold mb-4">Reviews</h2>
             <div className="grid gap-6">
               {reviews && reviews.length > 0 ? (
@@ -186,7 +190,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
               )}
             </div>
             <div className="mt-6 flex flex-col gap-2">
-              <Label>Write a review</Label>
+              <Label className="text-base font-medium">Write a review</Label>
               <div className="flex gap-1">
                 <StarRating
                   rating={rating}

@@ -45,7 +45,7 @@ const MenuItems = ({ onClose }) => {
 
     location.pathname.includes("listing") && currentFilter !== null
       ? setSearchParams(
-          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
+          new URLSearchParams(`?category=${getCurrentMenuItem.id}`),
         )
       : navigate(getCurrentMenuItem.path);
 
@@ -100,7 +100,7 @@ const HeaderRightContent = ({ onMenuClose }) => {
           className="relative"
         >
           <ShoppingCart className="w-6 h-6" />
-          <span className="absolute top-[-2px] right-0.5 text-xs">
+          <span className="absolute top-[-2px] right-0.5 text-xs font-bold">
             {cartItems?.items?.length || 0}
           </span>
           <span className="sr-only">User cart</span>
@@ -130,7 +130,7 @@ const HeaderRightContent = ({ onMenuClose }) => {
             </Avatar>
           )}
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="right" className="w-56 bg-white border-none">
+        <DropdownMenuContent align="end" className="w-56 bg-white border-none">
           <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -166,10 +166,7 @@ const ShoppingHeader = () => {
           <HousePlug className="w-6 h-6" />
           <span className="font-bold">UltraGadgets</span>
         </Link>
-        <Sheet
-          open={openMenuSheet}
-          onOpenChange={setOpenMenuSheet}
-        >
+        <Sheet open={openMenuSheet} onOpenChange={setOpenMenuSheet}>
           <Button
             onClick={() => setOpenMenuSheet(true)}
             size="icon"

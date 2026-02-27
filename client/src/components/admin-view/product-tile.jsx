@@ -16,41 +16,41 @@ const AdminProductTile = ({
           <img
             src={product?.image}
             alt={product?.title}
-            className="w-full object-cover rounded-t-lg scale-80"
+            className="w-full object-cover rounded-t-lg scale-80 hover:scale-100 transition duration-300"
           />
         </div>
         <CardContent>
-          <h2 className="text-base font-medium mb-2">{product?.title}</h2>
-          <div className="flex justify-between items-center mb-2">
+          <h2 className="font-medium mb-4 line-clamp-1">{product?.title}</h2>
+          <div className="flex justify-between items-center mb-4 text-lg font-bold">
             <span
               className={`${
                 product?.salePrice > 0 ? "line-through text-red-500" : ""
-              } text-sm font-medium`}
+              }`}
             >
               Tk {product?.price}
             </span>
             {product?.salePrice > 0 ? (
-              <span className="text-sm font-medium">
+              <span>
                 Tk {product?.salePrice}
               </span>
             ) : null}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between items-center mb-6">
+        <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-4">
           <Button
             onClick={() => {
               setOpenCreateProductsDialog(true);
               setCurrentUpdatedId(product?._id);
               setFormData(product);
             }}
-            className="bg-blue-600 text-white"
+            className="bg-blue-500 hover:bg-blue-600 w-full sm:w-auto"
             size="lg"
           >
             Update
           </Button>
           <Button
             onClick={() => handleDelete(product?._id)}
-            className="bg-red-600 text-white"
+            className="bg-red-500 hover:bg-red-600 w-full sm:w-auto"
             size="lg"
           >
             Delete

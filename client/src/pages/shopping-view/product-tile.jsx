@@ -12,14 +12,11 @@ const ShoppingProductTile = ({
   return (
     <Card className="w-full max-w-sm mx-auto p-0 pb-4 border border-gray-200 shadow-sm overflow-hidden cursor-pointer">
       <div className="relative">
-        <div
-          className="relative group"
-          onClick={() => handleGetProductDetails(product?._id)}
-        >
+        <div className="relative group">
           <img
             src={product?.image}
             alt={product?.title}
-            className="w-full h-[35vh] object-cover rounded-t-lg scale-80 hover:scale-90 transition-all duration-500"
+            className="w-full object-cover rounded-t-lg scale-80 hover:scale-100 transition duration-500"
           />
           {product?.totalStock === 0 ? (
             <Badge className="absolute top-2 left-2 bg-black/50 text-white">
@@ -34,31 +31,24 @@ const ShoppingProductTile = ({
               Sale
             </Badge>
           ) : null}
-          <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="w-12 h-12 bg-black/90 rounded-full flex items-center justify-center">
-              <Eye className="text-white" />
-            </div>
-          </div>
         </div>
-        <CardContent className="px-4 py-2">
-          <h2 className="text-base font-medium mb-2">{product?.title}</h2>
-          <div className="flex justify-between items-center mb-2">
+        <CardContent className="px-4 pt-2">
+          <h2 className="font-medium mb-4 line-clamp-1">{product?.title}</h2>
+          <div className="flex justify-between items-center mb-2 text-lg font-bold">
             <span
               className={`${
                 product?.salePrice > 0 ? "line-through text-red-500" : ""
-              }  text-sm font-medium`}
+              }`}
             >
               Tk {product?.price}
             </span>
             {product?.salePrice > 0 ? (
-              <span className="text-sm font-medium">
-                Tk {[product?.salePrice]}
-              </span>
+              <span>Tk {[product?.salePrice]}</span>
             ) : null}
           </div>
         </CardContent>
       </div>
-      <CardFooter>
+      <CardFooter className="flex flex-col px-4 gap-2">
         {product?.totalStock === 0 ? (
           <Button className="w-full opacity-60 cursor-not-allowed">
             Out of Stock
@@ -71,6 +61,13 @@ const ShoppingProductTile = ({
             Add to Cart
           </Button>
         )}
+        <Button
+          className="w-full"
+          variant="outline"
+          onClick={() => handleGetProductDetails(product?._id)}
+        >
+          View Product
+        </Button>
       </CardFooter>
     </Card>
   );

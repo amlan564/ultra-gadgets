@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   CameraIcon,
   ChevronLeftIcon,
+  ChevronRight,
   ChevronRightIcon,
   Headphones,
   Laptop,
@@ -35,7 +36,7 @@ const ShoppingHome = () => {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
   const { productList, productDetails } = useSelector(
-    (state) => state.shopProducts
+    (state) => state.shopProducts,
   );
   const { cartItems } = useSelector((state) => state.shopCart);
   const { featureImageList } = useSelector((state) => state.commonFeature);
@@ -65,7 +66,7 @@ const ShoppingHome = () => {
 
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
-        (item) => item.productId === getCurrentProductId
+        (item) => item.productId === getCurrentProductId,
       );
 
       if (indexOfCurrentItem > -1) {
@@ -73,7 +74,7 @@ const ShoppingHome = () => {
 
         if (getQuantity + 1 > getTotalStock) {
           toast.error(
-            `Only ${getQuantity} quantity can be added for this product`
+            `Only ${getQuantity} quantity can be added for this product`,
           );
           return;
         }
@@ -85,7 +86,7 @@ const ShoppingHome = () => {
         userId: user?.id,
         productId: getCurrentProductId,
         quantity: 1,
-      })
+      }),
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchCartItems(user?.id));
@@ -111,7 +112,7 @@ const ShoppingHome = () => {
       fetchAllFilteredProducts({
         filterParams: {},
         sortParams: "price-lowtohigh",
-      })
+      }),
     );
   }, [dispatch]);
 
@@ -139,7 +140,7 @@ const ShoppingHome = () => {
             setCurrentSlide(
               (prevSlide) =>
                 (prevSlide - 1 + featureImageList.length) %
-                featureImageList.length
+                featureImageList.length,
             )
           }
           variant="outline"
@@ -151,7 +152,7 @@ const ShoppingHome = () => {
         <Button
           onClick={() =>
             setCurrentSlide(
-              (prevSlide) => (prevSlide + 1) % featureImageList.length
+              (prevSlide) => (prevSlide + 1) % featureImageList.length,
             )
           }
           variant="outline"
@@ -161,12 +162,50 @@ const ShoppingHome = () => {
           <ChevronRightIcon className="w-4 h-4" />
         </Button>
       </div>
+
+      {/* feature products section */}
+      <section className="py-12">
+        <div className="px-6 xl:px-30">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold">Featured Products</h2>
+            <Button
+              variant="outline"
+              className="flex items-center"
+              onClick={() => navigate("/shop/listing")}
+            >
+              View All
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            {productList && productList.length > 0
+              ? productList.map((productItem, index) => (
+                  <ShoppingProductTile
+                    key={index}
+                    product={productItem}
+                    handleGetProductDetails={handleGetProductDetails}
+                    handleAddToCart={handleAddToCart}
+                  />
+                ))
+              : null}
+          </div>
+        </div>
+      </section>
+
       {/* shop by category section */}
       <section className="py-12 bg-gray-50">
         <div className="px-6 xl:px-30">
-          <h2 className="text-2xl font-bold text-center mb-8">
-            Shop By Category
-          </h2>
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold">Shop By Category</h2>
+            <Button
+              variant="outline"
+              className="flex items-center"
+              onClick={() => navigate("/shop/listing")}
+            >
+              View All
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
             {categoriesWithIcon.map((categoryItem) => (
               <Card
@@ -185,26 +224,7 @@ const ShoppingHome = () => {
           </div>
         </div>
       </section>
-      {/* feature products section */}
-      <section className="py-12">
-        <div className="px-6 xl:px-30">
-          <h2 className="text-2xl font-bold text-center mb-8">
-            Feature Products
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {productList && productList.length > 0
-              ? productList.map((productItem, index) => (
-                  <ShoppingProductTile
-                    key={index}
-                    product={productItem}
-                    handleGetProductDetails={handleGetProductDetails}
-                    handleAddToCart={handleAddToCart}
-                  />
-                ))
-              : null}
-          </div>
-        </div>
-      </section>
+
       <ProductDetailsDialog
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
