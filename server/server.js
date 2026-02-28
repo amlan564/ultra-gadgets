@@ -54,10 +54,9 @@ app.use(
       "Pragma",
     ],
     credentials: true, // Required for cookies/auth headers
-  })
+  }),
 );
 
-// app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
@@ -74,10 +73,6 @@ app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
-
-app.get("/", (req, res) => {
-  res.send("API is working");
-});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

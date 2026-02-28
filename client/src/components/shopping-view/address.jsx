@@ -127,7 +127,7 @@ const Address = ({ setCurrentSelectedAddress, selectedId }) => {
           setFormData={setFormData}
           buttonText={currentUpdatedId !== null ? "Update" : "Add"}
           onSubmit={handleManageAddress}
-          isBtnDisabled={!isFormValid()}
+          isBtnDisabled={!isFormValid() || user?.role === "guest"}
         />
       </CardContent>
     </Card>

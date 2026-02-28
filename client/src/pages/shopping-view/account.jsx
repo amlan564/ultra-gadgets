@@ -3,6 +3,9 @@ import ShoppingOrders from "@/components/shopping-view/orders";
 import Profile from "@/components/shopping-view/profile";
 import UserCard from "@/components/shopping-view/user-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 // import { checkAuth } from "@/store/auth-slice";
 // import { useEffect } from "react";
 // import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +22,13 @@ const ShoppingAccount = () => {
   //     dispatch(checkAuth(JSON.parse(token)));
   //   }
   // }, [dispatch, isAuthenticated, isLoading]);
+
+  const { user } = useSelector((state) => state.auth);
+
+  if (user.userName === "Guest") {
+    toast.error("Guest users cannot access this page.");
+    return <Navigate to="/shop/home" replace />;
+  }
 
   return (
     <div className="flex flex-col mx-6 xl:mx-30">

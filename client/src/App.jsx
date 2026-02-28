@@ -22,16 +22,17 @@ import SearchProducts from "./pages/shopping-view/search";
 import Payment from "./pages/shopping-view/payment";
 import OrderPlaced from "./pages/shopping-view/order-placed";
 import FeatureImage from "./pages/admin-view/feature-image";
+import GuestGuard from "./components/common/guest-guard";
 
 function App() {
-  const { isAuthenticated, user } = useSelector(
-    (state) => state.auth
+  const { isAuthenticated, user, isLoading } = useSelector(
+    (state) => state.auth,
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = JSON.parse(sessionStorage.getItem("token"));
-    dispatch(checkAuth(token));
+    // const token = JSON.parse(sessionStorage.getItem("token"));
+    dispatch(checkAuth());
   }, [dispatch]);
 
   return (
@@ -44,13 +45,18 @@ function App() {
             <CheckAuth
               isAuthenticated={isAuthenticated}
               user={user}
+              isLoading={isLoading}
             ></CheckAuth>
           }
         />
         <Route
           path="/auth"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+              isLoading={isLoading}
+            >
               <AuthLayout />
             </CheckAuth>
           }
@@ -61,7 +67,11 @@ function App() {
         <Route
           path="/admin"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+              isLoading={isLoading}
+            >
               <AdminLayout />
             </CheckAuth>
           }
@@ -74,7 +84,11 @@ function App() {
         <Route
           path="/shop"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+              isLoading={isLoading}
+            >
               <ShoppingLayout />
             </CheckAuth>
           }
@@ -82,9 +96,30 @@ function App() {
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="cart" element={<ShoppingCheckout />} />
-          <Route path="account" element={<ShoppingAccount />} />
-          <Route path="payment" element={<Payment />} />
-          <Route path="order-placed" element={<OrderPlaced />} />
+          <Route
+            path="account"
+            element={
+              <GuestGuard>
+                <ShoppingAccount />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="payment"
+            element={
+              <GuestGuard>
+                <Payment />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="order-placed"
+            element={
+              <GuestGuard>
+                <OrderPlaced />
+              </GuestGuard>
+            }
+          />
           <Route path="search" element={<SearchProducts />} />
         </Route>
         <Route path="*" element={<NotFound />}></Route>

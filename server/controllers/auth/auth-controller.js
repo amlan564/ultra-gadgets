@@ -78,7 +78,7 @@ const loginUser = async (req, res) => {
     // Check password
     const checkPasswordMatch = await bcrypt.compare(
       password,
-      checkUser.password
+      checkUser.password,
     );
 
     if (!checkPasswordMatch) {
@@ -99,7 +99,7 @@ const loginUser = async (req, res) => {
       "CLIENT_SECRET_KEY",
       {
         expiresIn: "60m",
-      }
+      },
     );
 
     res.status(200).json({
@@ -114,6 +114,50 @@ const loginUser = async (req, res) => {
       },
     });
   } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occured",
+    });
+  }
+};
+
+const guestLogin = async (req, res) => {
+  try {
+    const guestUser = await User.findOne({ email: "guest@gmail.com" });
+
+    if (!guestUser) {
+      return res.json({
+        success: false,
+        message: "Guest user not found",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: guestUser._id,
+        role: guestUser.role,
+        email: guestUser.email,
+        userName: guestUser.userName,
+      },
+      "CLIENT_SECRET_KEY",
+      {
+        expiresIn: "60m",
+      },
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Logged in successfully",
+      token,
+      user: {
+        email: guestUser.email,
+        role: guestUser.role,
+        id: guestUser._id,
+        userName: guestUser.userName,
+      },
+    });
+  } catch (error) {
     console.log(e);
     res.status(500).json({
       success: false,
@@ -286,6 +330,7 @@ module.exports = {
   handleProfileImageUpload,
   registerUser,
   loginUser,
+  guestLogin,
   logoutUser,
   updateProfile,
   updatePassword,

@@ -79,7 +79,6 @@ import { useNavigate } from "react-router-dom";
 const ShoppingCheckout = () => {
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
-  // for stripe
   const { clientSecret, orderId } = useSelector((state) => state.shopOrder);
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const dispatch = useDispatch();
@@ -94,7 +93,7 @@ const ShoppingCheckout = () => {
               ? currentItem?.salePrice
               : currentItem?.price) *
               currentItem?.quantity,
-          0
+          0,
         )
       : 0;
 
@@ -183,7 +182,7 @@ const ShoppingCheckout = () => {
 
           <Button
             onClick={handleInitiateStripePayment}
-            disabled={cartItems.items.length === 0}
+            disabled={cartItems.items?.length === 0 || user.role === "guest"}
             className="w-full bg-green-500 hover:bg-green-600 transition-all"
           >
             Proceed To Payment

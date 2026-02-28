@@ -17,27 +17,38 @@ export const registerUser = createAsyncThunk(
       formData,
       {
         withCredentials: true,
-      }
+      },
     );
 
     return response.data;
-  }
+  },
 );
 
-export const loginUser = createAsyncThunk(
-  "/auth/login",
+export const loginUser = createAsyncThunk("/auth/login", async (formData) => {
+  const response = await axios.post(
+    `${import.meta.env.VITE_API_URL}/api/auth/login`,
+    formData,
+    {
+      withCredentials: true,
+    },
+  );
 
-  async (formData) => {
+  return response.data;
+});
+
+export const guestLoginUser = createAsyncThunk(
+  "/auth/guest-login",
+  async () => {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/auth/login`,
-      formData,
+      `${import.meta.env.VITE_API_URL}/api/auth/guest-login`,
+      {},
       {
         withCredentials: true,
-      }
+      },
     );
 
     return response.data;
-  }
+  },
 );
 
 export const logoutUser = createAsyncThunk(
@@ -49,31 +60,33 @@ export const logoutUser = createAsyncThunk(
       {},
       {
         withCredentials: true,
-      }
+      },
     );
 
     return response.data;
-  }
+  },
 );
 
-export const checkAuth = createAsyncThunk(
-  "/auth/check-auth",
+export const checkAuth = createAsyncThunk("/auth/check-auth", async () => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
 
-  async (token) => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}/api/auth/check-auth`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
-      }
-    );
-
-    return response.data;
+  if (!token) {
+    return { success: false };
   }
-);
+
+  const response = await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/auth/check-auth`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+      },
+    },
+  );
+
+  return response.data;
+});
 
 export const updateUserProfile = createAsyncThunk(
   "/auth/update-profile",
@@ -87,10 +100,10 @@ export const updateUserProfile = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
         withCredentials: true,
-      }
+      },
     );
     return response.data;
-  }
+  },
 );
 
 export const updateUserPassword = createAsyncThunk(
@@ -105,11 +118,11 @@ export const updateUserPassword = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
         withCredentials: true,
-      }
+      },
     );
-    console.log(response?.data, "from redux password")
+    console.log(response?.data, "from redux password");
     return response.data;
-  }
+  },
 );
 
 const authSlice = createSlice({
@@ -149,6 +162,22 @@ const authSlice = createSlice({
         sessionStorage.setItem("token", JSON.stringify(action.payload.token));
       })
       .addCase(loginUser.rejected, (state) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.token = null;
+      })
+      .addCase(guestLoginUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(guestLoginUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.success ? action.payload.user : null;
+        state.isAuthenticated = action.payload.success;
+        state.token = action.payload.token;
+        sessionStorage.setItem("token", JSON.stringify(action.payload.token));
+      })
+      .addCase(guestLoginUser.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;

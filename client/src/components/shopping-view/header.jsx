@@ -23,6 +23,7 @@ import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
 import { Label } from "../ui/label";
+import toast from "react-hot-toast";
 
 const MenuItems = ({ onClose }) => {
   const navigate = useNavigate();
@@ -135,6 +136,11 @@ const HeaderRightContent = ({ onMenuClose }) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
+              if ((user.role === "guest")) {
+                toast.error("Guest users cannot access this page.");
+                return;
+              }
+
               navigate("/shop/account");
               // onMenuClose?.();
             }}
