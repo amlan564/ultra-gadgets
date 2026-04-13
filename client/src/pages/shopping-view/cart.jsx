@@ -166,13 +166,12 @@ const ShoppingCartPage = () => {
 
   return (
     <div className="pb-10">
-      <div className="px-30 py-14 bg-[#d1ede4] mb-10">
+      <div className="px-6 xl:px-30 py-14 bg-[#d1ede4] mb-10">
         <h2 className="font-bold text-2xl mb-2">Shopping Cart</h2>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" className="flex items-center gap-2">
-                <Home className="size-4" />
+              <BreadcrumbLink href="/">
                 Home
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -183,25 +182,16 @@ const ShoppingCartPage = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[3fr_1fr] gap-5 px-6 xl:px-30">
-        {/* address will go it checkout page */}
-        {/* <div className="">
-          <Address
-            selectedId={currentSelectedAddress}
-            setCurrentSelectedAddress={setCurrentSelectedAddress}
-          />
-        </div> */}
-
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-6 xl:px-30">
         {/* cart items table section */}
-        <div>
+        <div className="lg:col-span-2 2xl:col-span-3">
           {cartItems && cartItems.items && cartItems.items.length > 0 ? (
             <div className="rounded-md overflow-hidden border-0">
               <Table className="border-b border-gray-300">
                 <TableHeader className="[&_tr]:border-0">
                   <TableRow className="bg-[#00684a] hover:bg-[#00684a]">
-                    <TableHead className="rounded-bl-md text-white">
-                      Product
-                    </TableHead>
+                    <TableHead></TableHead>
+                    <TableHead className="text-white">Product</TableHead>
                     <TableHead className="text-white">Unit Price</TableHead>
                     <TableHead className="text-white">Quantity</TableHead>
                     <TableHead className="rounded-br-md text-white">
@@ -210,21 +200,23 @@ const ShoppingCartPage = () => {
                   </TableRow>
                 </TableHeader>
 
-                <TableBody className="">
+                <TableBody>
                   {cartItems.items.map((item) => (
                     <TableRow key={item.productId} className="border-gray-300">
                       <TableCell>
+                        <X
+                          onClick={() => handleCartItemDelete(item)}
+                          className="size-5 cursor-pointer ml-2"
+                        />
+                      </TableCell>
+                      <TableCell>
                         <div className="flex items-center gap-4">
-                          <X
-                            onClick={() => handleCartItemDelete(item)}
-                            className="size-5 cursor-pointer"
-                          />
                           <img
                             src={item.image}
                             alt={item.title}
                             className="w-10 h-10 object-cover rounded"
                           />
-                          <span>{item.title}</span>
+                          <span className="mr-12">{item.title}</span>
                         </div>
                       </TableCell>
 
@@ -289,7 +281,7 @@ const ShoppingCartPage = () => {
           </div>
         </div>
         {/* order summary section */}
-        <div className="border border-gray-300 shadow-md rounded-lg flex flex-col gap-4 p-4 h-fit">
+        <div className="lg:col-span-1 2xl:col-span-1 border border-gray-300 shadow-md rounded-lg flex flex-col gap-4 p-4 h-fit">
           <h4 className="font-bold text-sm">Order Summary</h4>
           <Separator />
           <div className="flex flex-col gap-2">

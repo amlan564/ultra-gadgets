@@ -38,14 +38,11 @@ const createSearchParamsHelper = (filterParams) => {
 
 const ShoppingListing = () => {
   const dispatch = useDispatch();
-  const { productList, productDetails } = useSelector(
-    (state) => state.shopProducts,
-  );
+  const { productList } = useSelector((state) => state.shopProducts);
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -212,7 +209,7 @@ const ShoppingListing = () => {
           </div>
         </div>
         {/* All products list */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 pt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4 pt-4">
           {productList && productList.length > 0
             ? productList.map((productItem, index) => (
                 <ShoppingProductTile

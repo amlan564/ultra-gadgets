@@ -7,13 +7,11 @@ const getFilteredProducts = async (req, res) => {
     let filters = {};
 
     if (category.length) {
-      // const normalizedCategory = category
-      //   .split(",")
-      //   .map((cat) => cat.charAt(0).toUpperCase() + cat.slice(1));
+      const normalizedCategory = category
+        .split(",")
+        .map((cat) => cat.charAt(0).toUpperCase() + cat.slice(1));
 
-      // filters.category = { $in: normalizedCategory };
-
-      filters.category = { $in: category.split(",") };
+      filters.category = { $in: normalizedCategory };
     }
 
     // Handle price range filter

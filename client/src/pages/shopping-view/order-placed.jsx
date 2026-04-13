@@ -14,13 +14,13 @@ const OrderPlaced = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh]">
+    <div className="flex flex-col items-center justify-center min-h-[80vh] px-6 xl:px-30">
       <CircleCheckBig className="text-[#00684a] size-12" />
-      <h1 className="text-3xl max-sm:text-2xl font-bold my-4 text-center">
+      <h1 className="text-2xl sm:text-3xl font-bold my-4 text-center">
         Order Confirmed!
       </h1>
-      <h4 className="">Thank you! Your orders has been successfully placed.</h4>
-      <div className="flex items-center gap-4 mt-6">
+      <h4 className="text-center">Thank you! Your orders has been successfully placed.</h4>
+      <div className="flex items-center gap-4 mt-8">
         <Button
           onClick={() => navigate("/shop/account")}
           variant="outline"
@@ -28,7 +28,7 @@ const OrderPlaced = () => {
           View Orders
         </Button>
         <Button
-          onClick={() => navigate("/shop/account")}
+          onClick={() => navigate("/shop/listing")}
           className="bg-[#00684a] hover:bg-[#00593f]"
         >
           Continue Shopping

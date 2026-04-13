@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductDetails } from "@/store/shop/products-slice";
@@ -10,8 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Heart, Home, Minus, Plus, ShoppingCart } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import { addReview, getReviews } from "@/store/shop/review-slice";
 import StarRating from "@/components/common/star-rating";
 import InnerImageZoom from "react-inner-image-zoom";
@@ -41,6 +40,8 @@ const ShoppingProductDetails = () => {
   const [activeTabs, setActiveTabs] = useState(0);
   const [reviewMsg, setReviewMsg] = useState("");
   const [rating, setRating] = useState(0);
+
+  const navigate = useNavigate();
 
   const currentCartItem = cartItems?.items?.find(
     (item) => item.productId === id,
@@ -132,6 +133,13 @@ const ShoppingProductDetails = () => {
     });
   };
 
+  const handleNavigateToCategory = (category) => {
+    sessionStorage.removeItem("filters");
+    const currentFilter = { category: [category] };
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+    navigate("/shop/listing");
+  };
+
   useEffect(() => {
     dispatch(fetchProductDetails(id));
   }, [dispatch, id]);
@@ -165,15 +173,19 @@ const ShoppingProductDetails = () => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" className="flex items-center gap-2">
-                <Home className="size-4" />
-                Home
-              </BreadcrumbLink>
+              <BreadcrumbLink href="/shop/home">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/shop/listing?category=${productDetails?.category}`}>
-                {productDetails?.category.charAt(0).toUpperCase() + productDetails?.category.slice(1)}
+              <BreadcrumbLink
+                onClick={() =>
+                  handleNavigateToCategory(
+                    productDetails?.category?.toLowerCase(),
+                  )
+                }
+                className="cursor-pointer"
+              >
+                {productDetails?.category}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -186,14 +198,14 @@ const ShoppingProductDetails = () => {
         </Breadcrumb>
       </div>
       {/* Product Details */}
-      <div className="grid grid-cols-7 gap-12 pb-10">
+      <div className="grid lg:grid-cols-2 2xl:grid-cols-7 gap-12 pb-10">
         {/* product image section */}
-        <div className="col-span-3 flex gap-4">
-          <div className="flex flex-col gap-2">
+        <div className="2xl:col-span-3 flex flex-col-reverse sm:flex-row gap-4">
+          <div className="flex sm:flex-col gap-2">
             {productDetails?.images.map((image, index) => (
               <div
                 key={index}
-                className={`border-2 w-26 h-26 rounded-lg overflow-hidden cursor-pointer ${
+                className={`border-2 w-18 h-18 sm:w-22 sm:h-22 md:w-26 md:h-26 rounded-lg overflow-hidden cursor-pointer ${
                   selectedImage === image
                     ? "border-[#00684a]"
                     : "border-gray-300 opacity-50"
@@ -208,22 +220,22 @@ const ShoppingProductDetails = () => {
               </div>
             ))}
           </div>
-          <div className="border-2 border-gray-300 rounded-lg overflow-hidden w-full h-110">
+          <div className="border-2 border-gray-300 rounded-lg overflow-hidden w-full h-full flex items-center justify-center">
             <InnerImageZoom
               src={selectedImage}
               zoomType="hover"
               zoomScale={1}
-              className="w-full h-full"
+              className="w-full object-cover"
             />
           </div>
         </div>
         {/* product details section */}
-        <div className="col-span-4">
-          <h2 className="text-3xl font-semibold">
+        <div className="2xl:col-span-4">
+          <h2 className="text-xl lg:text-2xl xl:text-3xl font-semibold">
             {productDetails?.title}
           </h2>
           {/* product review */}
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2 mt-2 text-sm lg:text-base">
             <div className="flex items-center gap-0.5">
               <StarRating rating={averageReview} />
             </div>
@@ -233,7 +245,7 @@ const ShoppingProductDetails = () => {
             </span>
           </div>
           {/* product price */}
-          <div className="flex items-center gap-4 my-4 text-[#00684a] font-bold text-3xl">
+          <div className="flex items-center gap-4 my-4 text-[#00684a] font-bold text-xl lg:text-2xl xl:text-3xl">
             {productDetails?.salePrice > 0 ? (
               <span>Tk {productDetails?.salePrice}</span>
             ) : null}
@@ -247,7 +259,8 @@ const ShoppingProductDetails = () => {
               Tk {productDetails?.price}
             </span>
           </div>
-          <p className="text-gray-600 text-sm text-justify pr-30">
+          {/* product description */}
+          <p className="text-gray-600 text-sm text-justify xl:pr-30">
             {productDetails?.description}
           </p>
           <h4 className="mt-6 font-semibold">Select Quantity:</h4>
@@ -276,10 +289,7 @@ const ShoppingProductDetails = () => {
           </div>
           <div className="flex items-center gap-4 mt-6">
             {productDetails?.totalStock === 0 ? (
-              <Button
-                className="opacity-60 cursor-not-allowed"
-                size="lg"
-              >
+              <Button className="opacity-60 cursor-not-allowed" size="lg">
                 Out of Stock
               </Button>
             ) : (
@@ -302,7 +312,7 @@ const ShoppingProductDetails = () => {
         </div>
       </div>
       {/* product description and reviews section */}
-      <div className="border-2 border-gray-300 rounded-lg p-10">
+      <div className="border-2 border-gray-300 rounded-lg p-6 lg:p-10">
         <div className="flex items-center gap-10">
           <Button
             className={`shadow-sm transition ${
@@ -327,12 +337,14 @@ const ShoppingProductDetails = () => {
         </div>
 
         {activeTabs === 0 && (
-          <div className="pt-10">{productDetails?.description}</div>
+          <div className="pt-10 text-justify">
+            {productDetails?.description}
+          </div>
         )}
         {activeTabs === 1 && (
-          <div className="pt-10 grid grid-cols-5 gap-12">
+          <div className="pt-10 grid lg:grid-cols-5 gap-12">
             {/* customer reviews section */}
-            <div className="col-span-3">
+            <div className="lg:col-span-3">
               <h2 className="font-bold text-lg mb-6">Customer Reviews</h2>
               <div className="flex flex-col gap-6">
                 {reviews && reviews.length > 0 ? (
@@ -394,7 +406,7 @@ const ShoppingProductDetails = () => {
               </div>
             </div>
             {/* percentage of ratings */}
-            <div className="col-span-2">
+            <div className="lg:col-span-2">
               <h2 className="font-bold text-lg mb-3">Ratings & Reviews</h2>
               <div className="flex items-center gap-2 mb-6">
                 <div className="flex items-center gap-0.5">

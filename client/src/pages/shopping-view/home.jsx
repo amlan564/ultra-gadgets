@@ -197,7 +197,7 @@ const ShoppingHome = () => {
       <section className="py-12">
         <div className="px-6 xl:px-30">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold">Featured Products</h2>
+            <h2 className="text-xl lg:text-2xl font-bold">Featured Products</h2>
             <Button
               variant="outline"
               className="flex items-center"
@@ -207,7 +207,7 @@ const ShoppingHome = () => {
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
             {featuredProducts && featuredProducts.length > 0
               ? featuredProducts.map((productItem, index) => (
                   <ShoppingProductTile
@@ -221,12 +221,11 @@ const ShoppingHome = () => {
           </div>
         </div>
       </section>
-
       {/* shop by category section */}
       <section className="py-12 bg-gray-50">
         <div className="px-6 xl:px-30">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold">Shop By Category</h2>
+            <h2 className="text-xl lg:text-2xl font-bold">Shop By Category</h2>
             <Button
               variant="outline"
               className="flex items-center"
@@ -260,7 +259,7 @@ const ShoppingHome = () => {
       {/* service highlights section */}
       <section className="py-12">
         <div className="px-6 xl:px-30">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {serviceHighlights.map((serviceItem) => (
               <div
                 key={serviceItem.id}
@@ -282,27 +281,27 @@ const ShoppingHome = () => {
       {/* newsletter section */}
       <section className="py-12">
         <div className="px-6 xl:px-30">
-          <div className="bg-[#d1ede4] flex items-center justify-between px-14 py-20 rounded-lg relative">
+          <div className="bg-[#d1ede4] flex items-center justify-between p-4 sm:p-10 lg:px-14 lg:py-20 rounded-lg relative">
             <div>
-              <h2 className="text-3xl font-bold mb-4">
+              <h2 className="text-2xl lg:text-3xl font-bold mb-4">
                 Get exclusive tech deals
               </h2>
               <h4 className="text-muted-foreground text-sm mb-8">
                 Subscribe and get 10% off your first order
               </h4>
-              <div className="bg-white flex items-center w-full h-12 rounded-full">
-                <Send className="size-7 mx-5 text-gray-500" />
+              <div className="bg-white flex items-center w-full h-10 lg:h-12 rounded-full">
+                <Send className="size-7 mx-3 lg:mx-5 text-gray-500" />
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full outline-none border-none pr-5"
+                  className="w-full outline-none border-none pr-5 max-sm:text-sm"
                 />
-                <Button className="rounded-full h-full px-10 bg-[#00684a] hover:bg-[#00593f] cursor-pointer">
+                <Button className="rounded-full h-full sm:px-10 bg-[#00684a] hover:bg-[#00593f] cursor-pointer">
                   Subscribe
                 </Button>
               </div>
             </div>
-            <div className="w-110 absolute bottom-0 right-0 rounded-lg overflow-hidden">
+            <div className="w-110 absolute bottom-0 right-0 rounded-lg overflow-hidden hidden lg:block">
               <img src={gadgets} alt="gadgets image" className="w-full" />
             </div>
           </div>

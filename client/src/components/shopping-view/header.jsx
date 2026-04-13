@@ -120,7 +120,7 @@ const HeaderRightContent = ({ onMenuClose }) => {
             <img
               src={user?.profileImage}
               alt=""
-              className="w-8 h-8 rounded-full object-cover border-2"
+              className="w-8 h-8 rounded-full object-cover border border-gray-300"
             />
           ) : (
             <Avatar>
@@ -171,7 +171,7 @@ const ShoppingHeader = () => {
   const closeMenuSheet = () => setOpenMenuSheet(false);
 
   return (
-    <header className="w-full bg-white relative">
+    <header className="w-full relative">
       <div className="flex h-16 items-center justify-between px-6 xl:px-30 fixed top-0 z-50 w-full bg-white border-b border-gray-200">
         <Link to="/shop/home" className="flex items-center gap-2 text-[#00684a]">
           <HousePlug className="w-6 h-6" />
@@ -181,7 +181,7 @@ const ShoppingHeader = () => {
           <Button
             onClick={() => setOpenMenuSheet(true)}
             size="icon"
-            className="lg:hidden"
+            className="lg:hidden bg-[#00684a] text-white"
           >
             <Menu className="w-6 h-6" />
             <span className="sr-only">Toggle header menu</span>

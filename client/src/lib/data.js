@@ -4,7 +4,7 @@ export const shopInfoData = [
   {
     id: 1,
     title: "Address",
-    desc: " Block-B, Banasree R/A, Dhaka 1219, \nBangladesh",
+    desc: " Block-B, Banasree R/A, Dhaka 1219, Bangladesh",
     icon: MapPin,
   },
   {
@@ -25,37 +25,6 @@ export const shopInfoData = [
     title: "Hours",
     desc: " 10:00 - 19:00, Mon - Sat",
     icon: Clock,
-  },
-];
-
-export const footerCompanyData = [
-  {
-    id: 1,
-    label: "About Us",
-  },
-  {
-    id: 2,
-    label: "Delivery Information",
-  },
-  {
-    id: 3,
-    label: "Terms & Conditions",
-  },
-  {
-    id: 4,
-    label: "Contact Us",
-  },
-  {
-    id: 5,
-    label: "Support Center",
-  },
-  {
-    id: 6,
-    label: "Careers",
-  },
-  {
-    id: 6,
-    label: "FAQs",
   },
 ];
 

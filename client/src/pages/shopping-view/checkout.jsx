@@ -23,7 +23,6 @@ import {
   Home,
   Pencil,
   Plus,
-  ShieldCheck,
   Tag,
   Trash2,
   Truck,
@@ -35,8 +34,6 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-// ── Constants ─────────────────────────────────────────────────────────────────
 
 const SHIPPING_OPTIONS = [
   {
@@ -60,8 +57,6 @@ const PROMO_CODES = {
   SAVE200: 200,
 };
 
-// ── Section Card ──────────────────────────────────────────────────────────────
-
 const SectionCard = ({ title, children }) => (
   <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
     <div className="flex items-center gap-3 mb-5">
@@ -70,8 +65,6 @@ const SectionCard = ({ title, children }) => (
     {children}
   </div>
 );
-
-// ── Main Component ────────────────────────────────────────────────────────────
 
 const ShoppingCheckoutPage = () => {
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -116,7 +109,6 @@ const ShoppingCheckoutPage = () => {
   const totalAmount = subtotal + shippingCost - promoDiscount;
   const currentStep = !selectedAddress ? 1 : !selectedShipping ? 2 : 3;
 
-  // ── Promo ──
   const handleApplyPromo = () => {
     const code = promoCode.trim().toUpperCase();
     if (PROMO_CODES[code]) {
@@ -134,7 +126,6 @@ const ShoppingCheckoutPage = () => {
     setPromoCode("");
   };
 
-  // ── Address handlers (matches original Address component logic) ──
   const isAddressFormValid = () =>
     Object.values(newAddress).every((v) => v.trim() !== "");
 
@@ -142,6 +133,11 @@ const ShoppingCheckoutPage = () => {
     if (addressList?.length >= 3 && currentUpdatedId === null) {
       toast.error("You can add maximum 3 addresses");
       setNewAddress({ address: "", city: "", postalCode: "", phone: "" });
+      return;
+    }
+
+    if (user?.role === "guest") {
+      toast.error("Guest users cannot add address");
       return;
     }
 
@@ -196,9 +192,9 @@ const ShoppingCheckoutPage = () => {
     );
   };
 
-  // ── Order ──
   const buildOrderData = (paymentMethod) => ({
     userId: user?.id,
+    fullName: user?.fullName,
     cartId: cartItems?._id,
     cartItems: cartItems.items.map((item) => ({
       productId: item?.productId,
@@ -268,18 +264,14 @@ const ShoppingCheckoutPage = () => {
     }
   };
 
-  // ── Render ────────────────────────────────────────────────────────────────
-
   return (
     <div className="min-h-screen pb-10">
-      <div className="px-30 py-14 bg-[#d1ede4] mb-10">
+      <div className="px-6 xl:px-30 py-14 bg-[#d1ede4] mb-10">
         <h2 className="font-bold text-2xl mb-2">Checkout</h2>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" className="flex items-center gap-2">
-                <Home className="size-4" /> Home
-              </BreadcrumbLink>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -293,13 +285,13 @@ const ShoppingCheckoutPage = () => {
         </Breadcrumb>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[3fr_1fr] gap-5 px-6 xl:px-30">
-        {/* ── Left ── */}
-        <div className="flex flex-col gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-6 xl:px-30">
+        {/* Left — delivery address, delivert method and payment method section */}
+        <div className="lg:col-span-2 2xl:col-span-3 flex flex-col gap-5">
           {/* Delivery Address */}
           <SectionCard title="Delivery Address">
             {addressList?.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
                 {addressList.map((addr) => {
                   const isSelected = selectedAddress?._id === addr._id;
 
@@ -353,9 +345,7 @@ const ShoppingCheckoutPage = () => {
                         <p className="text-xs text-gray-500 mt-0.5">
                           {addr.address}, {addr.city} {addr.postalCode}
                         </p>
-                        <p className="text-xs text-gray-500">
-                          
-                        </p>
+                        <p className="text-xs text-gray-500"></p>
                       </div>
                     </div>
                   );
@@ -452,7 +442,7 @@ const ShoppingCheckoutPage = () => {
                 <div className="flex gap-2 mt-4">
                   <Button
                     onClick={handleManageAddress}
-                    disabled={!isAddressFormValid() || user?.role === "guest"}
+                    disabled={!isAddressFormValid()}
                     className="bg-[#00684a] hover:bg-[#00593f] text-white text-sm"
                   >
                     {currentUpdatedId !== null ? "Update" : "Save Address"}
@@ -477,7 +467,6 @@ const ShoppingCheckoutPage = () => {
               </div>
             )}
           </SectionCard>
-
           {/* Shipping */}
           <SectionCard title="Delivery Method">
             <div className="flex flex-col gap-3">
@@ -522,7 +511,6 @@ const ShoppingCheckoutPage = () => {
               )}
             </div>
           </SectionCard>
-
           {/* Payment */}
           <SectionCard title="Payment Method">
             <div className="flex flex-col gap-3">
@@ -546,11 +534,6 @@ const ShoppingCheckoutPage = () => {
                     <span className="text-xs font-medium text-[#00684a]">
                       (Stripe)
                     </span>
-                    {selectedPayment === "stripe" && (
-                      <span className="flex items-center gap-1 text-xs text-blue-600 font-medium">
-                        <ShieldCheck className="w-3 h-3" /> 100% Secure
-                      </span>
-                    )}
                   </div>
                   <div className="flex items-center gap-1.5 mt-1">
                     {["VISA", "MC", "AMEX"].map((b) => (
@@ -594,20 +577,18 @@ const ShoppingCheckoutPage = () => {
             </div>
           </SectionCard>
         </div>
-
-        {/* Right — Order Summary ── */}
-        <div className="h-fit">
+        {/* Right — Order Summary section */}
+        <div className="lg:col-span-1 2xl:col-span-1 h-fit">
           <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
             <h4 className="font-semibold text-base mb-4">Order Summary</h4>
             <Separator />
-
             {/* Items */}
             <div className="flex flex-col gap-3 my-4 max-h-52 overflow-y-auto">
               {cartItems?.items?.map((item) => (
                 <div className="flex items-start">
                   <div
                     key={item.productId}
-                    className="flex items-center flex-1 gap-3"
+                    className="flex items-start flex-1 gap-3 pr-2"
                   >
                     <img
                       src={item.image}
@@ -616,12 +597,12 @@ const ShoppingCheckoutPage = () => {
                     />
                     <div className="flex-1">
                       <p className="text-xs">{item.title}</p>
-                      <p className="text-xs text-gray-400 mt-0.5">
+                      <p className="text-xs text-gray-400">
                         Qty: {item.quantity}
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs shrink-0 pt-1.75">
+                  <p className="text-xs shrink-0">
                     Tk{" "}
                     {(item.salePrice > 0 ? item.salePrice : item.price) *
                       item.quantity}
@@ -629,9 +610,7 @@ const ShoppingCheckoutPage = () => {
                 </div>
               ))}
             </div>
-
             <Separator />
-
             {/* promo code */}
             <div className="mt-4">
               {!appliedPromo ? (
@@ -672,9 +651,7 @@ const ShoppingCheckoutPage = () => {
                 </div>
               )}
             </div>
-
             <Separator className="my-4" />
-
             {/* Full breakdown */}
             <div className="flex flex-col gap-1.5 text-sm mb-4">
               <div className="flex justify-between">
@@ -696,7 +673,6 @@ const ShoppingCheckoutPage = () => {
                 </div>
               )}
             </div>
-
             {/* Total */}
             <div className="flex justify-between items-baseline">
               <span className="text-base font-bold text-gray-900">Total</span>

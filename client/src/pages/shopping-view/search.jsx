@@ -85,7 +85,7 @@ const SearchProducts = () => {
       {!searchResults.length ? (
         <h1 className="text-xl font-bold">No result found</h1>
       ) : null}
-      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
         {searchResults.map((item) => (
           <ShoppingProductTile
             product={item}

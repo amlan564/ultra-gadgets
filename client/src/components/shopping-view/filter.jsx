@@ -13,7 +13,7 @@ const ProductFilter = ({ filters, handleFilter }) => {
 
   // Initialize price range state with default values from filters or bounds
   const [priceRange, setPriceRange] = useState(
-    filters.price || [MIN_PRICE, MAX_PRICE]
+    filters.price || [MIN_PRICE, MAX_PRICE],
   );
 
   // Handle price range changes from the slider
@@ -33,7 +33,7 @@ const ProductFilter = ({ filters, handleFilter }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm h-[80vh] lg:w-[350px] overflow-y-auto hidden lg:block">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm lg:w-[300px] h-fit overflow-y-auto hidden lg:block">
       <div className="px-4 py-3 flex items-center justify-between">
         <h2 className="text-lg font-bold">Filters</h2>
         <Button
@@ -46,11 +46,11 @@ const ProductFilter = ({ filters, handleFilter }) => {
         </Button>
       </div>
       <Separator />
-      <div className="p-4 space-y-4">
+      <div>
         {/* Price Range Filter */}
-        <div>
+        <div className="p-4 space-y-4">
           <h3 className="text-base font-bold">Price Range</h3>
-          <div className="my-4">
+          <div>
             <Slider
               value={priceRange}
               onValueChange={handlePriceChange}
@@ -58,40 +58,38 @@ const ProductFilter = ({ filters, handleFilter }) => {
               max={MAX_PRICE}
               step={10}
               className="my-4"
+              minStepsBetweenThumbs={1}
             />
             <div className="flex justify-between text-sm text-gray-600">
               <span>Tk {priceRange[0]}</span>
               <span>Tk {priceRange[1]}</span>
             </div>
           </div>
-          <Separator />
         </div>
+        <Separator />
         {/* Category Filter */}
         {Object.keys(filterOptions).map((item, index) => (
-          <div key={index}>
-            <div>
-              <h3 className="text-base font-bold">Category</h3>
-              <div className="grid gap-2 my-2">
-                {filterOptions[item].map((option) => (
-                  <Label
-                    key={option.id}
-                    className="flex items-center gap-2 font-medium text-base mt-2 cursor-pointer"
-                  >
-                    <Checkbox
-                      checked={
-                        filters &&
-                        Object.keys(filters).length > 0 &&
-                        filters[item] &&
-                        filters[item].indexOf(option.id) > -1
-                      }
-                      onCheckedChange={() => handleFilter(item, option.id)}
-                    />
-                    {option.label}
-                  </Label>
-                ))}
-              </div>
+          <div key={index} className="p-4 space-y-4">
+            <h3 className="text-base font-bold">Category</h3>
+            <div className="grid gap-2 my-2">
+              {filterOptions[item].map((option) => (
+                <Label
+                  key={option.id}
+                  className="flex items-center gap-2 font-medium text-base mt-2 cursor-pointer"
+                >
+                  <Checkbox
+                    checked={
+                      filters &&
+                      Object.keys(filters).length > 0 &&
+                      filters[item] &&
+                      filters[item].indexOf(option.id) > -1
+                    }
+                    onCheckedChange={() => handleFilter(item, option.id)}
+                  />
+                  <span className="text-sm">{option.label}</span>
+                </Label>
+              ))}
             </div>
-            <Separator />
           </div>
         ))}
       </div>

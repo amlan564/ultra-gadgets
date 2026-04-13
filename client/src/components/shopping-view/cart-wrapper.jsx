@@ -38,12 +38,12 @@ const UserCartWrapper = ({ setOpenCartSheet, cartItems }) => {
         {cartItems && cartItems.length > 0 ? (
           cartItems.map((item) => <UserCartItemsContent cartItem={item} />)
         ) : (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center justify-center h-full px-4">
             <div className="bg-[#d1ede4] p-4 mb-4 rounded-full">
               <ShoppingCart className="size-8 text-[#00684a]" />
             </div>
             <h4 className="font-bold mb-2">Your Cart is Empty!</h4>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-center text-muted-foreground">
               Looks like you haven't added anything to your cart yet.
             </span>
           </div>

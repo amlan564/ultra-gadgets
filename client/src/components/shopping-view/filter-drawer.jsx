@@ -13,7 +13,7 @@ const ProductFilterDrawer = ({ filters, handleFilter }) => {
 
   // Initialize price range state with default values from filters or bounds
   const [priceRange, setPriceRange] = useState(
-    filters.price || [MIN_PRICE, MAX_PRICE]
+    filters.price || [MIN_PRICE, MAX_PRICE],
   );
 
   // Handle price range changes from the slider
@@ -32,8 +32,8 @@ const ProductFilterDrawer = ({ filters, handleFilter }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm lg:fixed lg:top-24 lg:w-[250px] z-10 overflow-y-auto">
-      <div className="px-4 py-3 flex items-center justify-between">
+    <div className="bg-white rounded-lg shadow-sm z-10 overflow-y-auto lg:hidden">
+      <div className="px-4 pb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold">Filters</h2>
         <Button
           variant="outline"
@@ -45,11 +45,11 @@ const ProductFilterDrawer = ({ filters, handleFilter }) => {
         </Button>
       </div>
       <Separator />
-      <div className="p-4 space-y-4">
+      <div>
         {/* Price Range Filter */}
-        <div>
+        <div className="p-4">
           <h3 className="text-base font-bold">Price Range</h3>
-          <div className="my-4">
+          <div className="mt-4">
             <Slider
               value={priceRange}
               onValueChange={handlePriceChange}
@@ -63,11 +63,11 @@ const ProductFilterDrawer = ({ filters, handleFilter }) => {
               <span>৳{priceRange[1]}</span>
             </div>
           </div>
-          <Separator />
         </div>
+        <Separator />
         {/* Category Filter */}
         {Object.keys(filterOptions).map((item, index) => (
-          <div key={index}>
+          <div key={index} className="p-4">
             <div>
               <h3 className="text-base font-bold">Category</h3>
               <div className="grid gap-2 my-2">
@@ -85,12 +85,11 @@ const ProductFilterDrawer = ({ filters, handleFilter }) => {
                       }
                       onCheckedChange={() => handleFilter(item, option.id)}
                     />
-                    {option.label}
+                    <span className="text-sm">{option.label}</span>
                   </Label>
                 ))}
               </div>
             </div>
-            <Separator />
           </div>
         ))}
       </div>

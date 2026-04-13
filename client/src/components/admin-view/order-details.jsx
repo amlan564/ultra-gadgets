@@ -16,6 +16,23 @@ const initialFormData = {
   status: "",
 };
 
+const getOrderStatusStyle = (status) => {
+  switch (status) {
+    case "Pending":
+      return "bg-yellow-100 text-yellow-800";
+    case "In Process":
+      return "bg-blue-100 text-blue-800";
+    case "In Shipping":
+      return "bg-purple-100 text-purple-800";
+    case "Delivered":
+      return "bg-[#d1ede4] text-[#00684a]";
+    case "Rejected":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
 const AdminOrderDetailsView = ({ orderDetails }) => {
   const [formData, setFormData] = useState(initialFormData);
   const { user } = useSelector((state) => state.auth);
@@ -25,7 +42,7 @@ const AdminOrderDetailsView = ({ orderDetails }) => {
     e.preventDefault();
     const { status } = formData;
     dispatch(
-      updateOrderStatus({ id: orderDetails?._id, orderStatus: status })
+      updateOrderStatus({ id: orderDetails?._id, orderStatus: status }),
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(getOrderDetailsForAdmin(orderDetails?._id));
@@ -38,78 +55,90 @@ const AdminOrderDetailsView = ({ orderDetails }) => {
 
   return (
     <DialogContent className="sm:max-w-[500px] md:max-w-[600px] h-[90vh] overflow-y-auto">
-      <div className="grid gap-6">
-        <div className="grid gap-1">
-          <div className="flex items-center justify-between mt-6">
-            <p className="font-medium">Order ID</p>
-            <p className="text-sm">{orderDetails?._id}</p>
-          </div>
-          <div className="flex items-center justify-between mt-2">
-            <p className="font-medium">Order Date</p>
-            <p className="text-sm">{orderDetails?.orderDate.split("T")[0]}</p>
-          </div>
-          <div className="flex items-center justify-between mt-2">
-            <p className="font-medium">Order Price</p>
-            <p className="text-sm">{orderDetails?.totalAmount}</p>
-          </div>
-          <div className="flex items-center justify-between mt-2">
-            <p className="font-medium">Payment Method</p>
-            <p className="text-sm">{orderDetails?.paymentMethod}</p>
-          </div>
-          <div className="flex items-center justify-between mt-2">
-            <p className="font-medium">Payment Status</p>
-            <p className="text-sm">{orderDetails?.paymentStatus}</p>
-          </div>
-          <div className="flex items-center justify-between mt-2">
-            <p className="font-medium">Order Status</p>
-            <Label>
-              <Badge
-                className={`py-1 px-2 ${
-                  orderDetails?.orderStatus === "Delivered"
-                    ? "bg-green-500"
-                    : orderDetails?.orderStatus === "Rejected"
-                    ? "bg-red-500"
-                    : "bg-black"
-                }`}
-              >
-                {orderDetails?.orderStatus}
-              </Badge>
-            </Label>
+      <div className="flex flex-col gap-4">
+        {/* order summary section */}
+        <div className="flex flex-col gap-4">
+          <div className="font-bold">Order Summary</div>
+          <div className="flex flex-col gap-1 text-sm">
+            <div className="flex items-center justify-between">
+              <p className="font-medium">Order ID</p>
+              <p>{orderDetails?._id}</p>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <p className="font-medium">Order Date</p>
+              <p>{orderDetails?.orderDate.split("T")[0]}</p>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <p className="font-medium">Order Price</p>
+              <p>{orderDetails?.totalAmount}</p>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <p className="font-medium">Payment Method</p>
+              <p>{orderDetails?.paymentMethod}</p>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <p className="font-medium">Payment Status</p>
+              <p>{orderDetails?.paymentStatus}</p>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <p className="font-medium">Order Status</p>
+              <p>
+                <Badge
+                  className={`py-1 px-2 ${getOrderStatusStyle(
+                    orderDetails?.orderStatus,
+                  )}`}
+                >
+                  {orderDetails?.orderStatus}
+                </Badge>
+              </p>
+            </div>
           </div>
         </div>
         <Separator />
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <div className="font-medium">Order Details</div>
-            <ul className="grid gap-3">
+        {/* order items section */}
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
+            <div className="font-bold">Order Items</div>
+            <ul className="flex flex-col gap-3 text-sm">
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
                 ? orderDetails?.cartItems.map((item) => (
-                    <li className="grid grid-cols-[2fr_1fr_auto]">
-                      <p>
-                        <span className="font-medium">Name: </span>
-                        {item.title}
+                    <div className="flex items-start">
+                      <div
+                        key={item.productId}
+                        className="flex items-start flex-1 gap-3 pr-2"
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-12 h-12 object-cover rounded-lg border border-gray-200 shrink-0"
+                        />
+                        <div className="flex-1">
+                          <p className="text-sm">{item.title}</p>
+                          <p className="text-sm text-gray-400">
+                            Qty: {item.quantity}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-sm shrink-0">
+                        Tk{" "}
+                        {(item.salePrice > 0 ? item.salePrice : item.price) *
+                          item.quantity}
                       </p>
-                      <p>
-                        <span className="font-medium">Quantity: </span>
-                        {item.quantity}
-                      </p>
-                      <p>
-                        <span className="font-medium">Price: </span>
-                        {item.price}
-                      </p>
-                    </li>
+                    </div>
                   ))
                 : null}
             </ul>
           </div>
         </div>
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <div className="font-medium">Shipping Info</div>
-            <div className="grid gap-1">
+        <Separator />
+        {/* shipping info section */}
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
+            <div className="font-bold">Shipping Info</div>
+            <div className="flex flex-col gap-2 text-sm">
               <p>
                 <span className="font-medium">Name: </span>
-                {user?.fullName}
+                {orderDetails?.fullName}
               </p>
               <p>
                 <span className="font-medium">Address: </span>

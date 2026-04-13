@@ -7,6 +7,7 @@ const createOrder = async (req, res) => {
   try {
     const {
       userId,
+      fullName,
       cartId,
       cartItems,
       addressInfo,
@@ -21,6 +22,7 @@ const createOrder = async (req, res) => {
     if (paymentMethod === "COD") {
       const newlyCreatedOrder = new Order({
         userId,
+        fullName,
         cartId,
         cartItems,
         addressInfo,
@@ -54,6 +56,7 @@ const createOrder = async (req, res) => {
 
     const newlyCreatedOrder = new Order({
       userId,
+      fullName,
       cartId,
       cartItems,
       addressInfo,

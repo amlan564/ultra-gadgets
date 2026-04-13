@@ -66,14 +66,14 @@ const UserCartItemsContent = ({ cartItem }) => {
   };
 
   return (
-    <div className="flex items-center px-4">
+    <div className="flex px-4">
       <img
         src={cartItem?.image}
         alt={cartItem?.title}
-        className="w-18 h-18 max-sm:w-14 max-sm:h-14 object-cover scale-90 mr-2"
+        className="w-16 h-16 max-sm:w-14 max-sm:h-14 object-cover mr-2"
       />
       <div className="flex-1 mr-2">
-        <h3 className="font-bold text-sm max-sm:text-xs">{cartItem?.title}</h3>
+        <h3 className="font-bold text-xs sm:text-sm">{cartItem?.title}</h3>
         <div className="flex items-center gap-2 mt-1">
           <Button
             onClick={() => handleUpdateQuantity(cartItem, "minus")}

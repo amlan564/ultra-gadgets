@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  // for paypal
-  // approvalURL: null,
-  // for stripe
   clientSecret: null,
   isLoading: false,
   orderId: null,
@@ -74,9 +71,6 @@ const shoppingOrderSlice = createSlice({
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        // for paypal
-        // state.approvalURL = action.payload.approvalURL;
-        // for stripe
         state.clientSecret = action.payload.clientSecret;
         state.orderId = action.payload.orderId;
         sessionStorage.setItem(
@@ -86,13 +80,9 @@ const shoppingOrderSlice = createSlice({
       })
       .addCase(createOrder.rejected, (state) => {
         state.isLoading = true;
-        // for paypal
-        // state.approvalURL = null;
-        // for stripe
         state.clientSecret = null;
         state.orderId = null;
       })
-      //for stripe
       .addCase(capturePayment.pending, (state) => {
         state.isLoading = true;
       })
