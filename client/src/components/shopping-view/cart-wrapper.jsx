@@ -23,7 +23,7 @@ const UserCartWrapper = ({ setOpenCartSheet, cartItems }) => {
       : 0;
 
   return (
-    <SheetContent className="sm:max-w-md h-screen overflow-y-auto flex flex-col justify-between border-none">
+    <SheetContent className="sm:max-w-md min-h-screen overflow-y-auto flex flex-col justify-between border-none">
       <SheetHeader className="px-0">
         <div className="flex items-center gap-2 px-4 pb-2">
           <ShoppingCart className="size-5" />
