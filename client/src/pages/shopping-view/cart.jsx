@@ -1,5 +1,3 @@
-import Address from "@/components/shopping-view/address";
-import UserCartItemsContent from "@/components/shopping-view/cart-items-content";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -171,9 +169,7 @@ const ShoppingCartPage = () => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">
-                Home
-              </BreadcrumbLink>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
